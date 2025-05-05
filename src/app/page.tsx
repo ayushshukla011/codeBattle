@@ -1,102 +1,216 @@
-import Image from "next/image";
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-white dark:bg-gray-800 shadow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">CodeBattle</h1>
+          
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/login"
+              className="px-4 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 rounded"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/register"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded"
+            >
+              Create Account
+            </Link>
+          </div>
         </div>
+      </header>
+      
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="bg-gray-50 dark:bg-gray-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                Challenge Your Coding Skills with Friends
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
+                CodeBattle allows you to compete with friends on Codeforces problems in real-time. 
+                Track your progress, improve your skills, and have fun!
+              </p>
+              <div className="flex justify-center space-x-4">
+                <Link
+                  href="/register"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-md"
+                >
+                  Get Started
+                </Link>
+                <Link
+                  href="#how-it-works"
+                  className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium rounded-md"
+                >
+                  How It Works
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* How It Works Section */}
+        <section id="how-it-works" className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+              How CodeBattle Works
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl font-bold mx-auto mb-4">
+                  1
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Create a Challenge
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Set the difficulty range, number of problems, and duration for your challenge.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl font-bold mx-auto mb-4">
+                  2
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Invite a Friend
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Share your challenge code or link with a friend to join the battle.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl font-bold mx-auto mb-4">
+                  3
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Compete & Win
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Solve Codeforces problems faster than your opponent to win the battle.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Features Section */}
+        <section className="bg-gray-50 dark:bg-gray-900 py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+              Features
+            </h2>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Real-time Tracking
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Monitor your opponent's progress in real-time as they solve problems.
+                </p>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Customizable Challenges
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Choose difficulty levels, problem count, and time limits that work for you.
+                </p>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Codeforces Integration
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Problems are from Codeforces, so you're practicing on a real competitive platform.
+                </p>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Challenge History
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Review your past challenges and track your improvement over time.
+                </p>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Simple to Use
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Easy to create challenges, invite friends, and get started coding.
+                </p>
+              </div>
+              
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                  Skill Development
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Improve your problem-solving skills with friendly competition.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* CTA Section */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Ready to Battle?
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8">
+              Create an account today and challenge your friends to coding battles.
+            </p>
+            <Link
+              href="/register"
+              className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-md text-lg"
+            >
+              Start Coding Now
+            </Link>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      
+      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">CodeBattle</h2>
+              <p className="text-gray-600 dark:text-gray-400">Compete. Code. Conquer.</p>
+            </div>
+            <div className="flex space-x-6">
+              <Link href="/" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                Home
+              </Link>
+              <Link href="#how-it-works" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                How It Works
+              </Link>
+              <Link href="/login" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                Sign In
+              </Link>
+              <Link href="/register" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                Register
+              </Link>
+            </div>
+          </div>
+          <div className="mt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+            &copy; {new Date().getFullYear()} CodeBattle. All rights reserved.
+          </div>
+        </div>
       </footer>
     </div>
   );

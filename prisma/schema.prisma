@@ -1,0 +1,89 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String       @id @default(auto()) @map("_id") @db.ObjectId
+  email            String       @unique
+  passwordHash     String
+  codeforcesHandle String       @unique
+  createdAt        DateTime     @default(now())
+  
+  // Relations
+  createdChallenges Challenge[] @relation("CreatedBy")
+  joinedChallenges  Challenge[] @relation("JoinedBy")
+  winningChallenges Challenge[] @relation("Winner")
+  submissions       Submission[]
+}
+
+model Challenge {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdById    String       @db.ObjectId
+  joinedById     String?      @db.ObjectId
+  code           String       @unique
+  difficultyMin  Int
+  difficultyMax  Int
+  problemCount   Int
+  durationMinutes Int
+  startTime      DateTime?
+  endTime        DateTime?
+  winnerId       String?      @db.ObjectId
+  status         ChallengeStatus @default(WAITING)
+  createdAt      DateTime     @default(now())
+  
+  // Relations
+  createdBy      User         @relation("CreatedBy", fields: [createdById], references: [id])
+  joinedBy       User?        @relation("JoinedBy", fields: [joinedById], references: [id])
+  winner         User?        @relation("Winner", fields: [winnerId], references: [id])
+  problems       Problem[]
+  submissions    Submission[]
+}
+
+model Problem {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  challengeId String       @db.ObjectId
+  contestId   Int
+  index       String
+  title       String
+  
+  // Relations
+  challenge   Challenge    @relation(fields: [challengeId], references: [id])
+  submissions Submission[]
+}
+
+model Submission {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  challengeId    String       @db.ObjectId
+  problemId      String       @db.ObjectId
+  userId         String       @db.ObjectId
+  submissionId   Int
+  submissionTime DateTime
+  verdict        SubmissionVerdict
+  
+  // Relations
+  challenge     Challenge    @relation(fields: [challengeId], references: [id])
+  problem       Problem      @relation(fields: [problemId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+}
+
+enum ChallengeStatus {
+  WAITING
+  IN_PROGRESS
+  FINISHED
+}
+
+enum SubmissionVerdict {
+  OK
+  WRONG_ANSWER
+  TIME_LIMIT
+  MEMORY_LIMIT
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+  OTHER
+} 
