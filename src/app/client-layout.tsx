@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { SocketProvider } from '@/lib/socket-context';
+import { ToastProvider } from '@/lib/toast-context';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string>('');
@@ -26,12 +27,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   
   // Only provide socket context if we have a user ID
   if (!userId) {
-    return <>{children}</>;
+    return (
+      <ToastProvider>
+        {children}
+      </ToastProvider>
+    );
   }
   
   return (
-    <SocketProvider userId={userId}>
-      {children}
-    </SocketProvider>
+    <ToastProvider>
+      <SocketProvider userId={userId}>
+        {children}
+      </SocketProvider>
+    </ToastProvider>
   );
 } 

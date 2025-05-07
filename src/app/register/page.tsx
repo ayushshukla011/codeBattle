@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useToast } from '@/lib/toast-context';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -42,10 +44,15 @@ export default function RegisterPage() {
         throw new Error(data.error || 'Registration failed');
       }
 
+      // Show success toast
+      showToast('Account created successfully! Redirecting to login...', 'success');
+
       // Registration successful, redirect to login
       router.push('/login');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      const errorMessage = err instanceof Error ? err.message : 'Registration failed';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }

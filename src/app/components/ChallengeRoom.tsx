@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSocket } from '@/lib/socket-context';
+import { useToast } from '@/lib/toast-context';
 
 // Types
 type User = {
@@ -67,6 +68,7 @@ export default function ChallengeRoom({
   
   // Socket context
   const { timeLeft: socketTimeLeft, solvedProblems } = useSocket();
+  const { showToast } = useToast();
   
   // Use socket time if available
   useEffect(() => {
@@ -76,6 +78,13 @@ export default function ChallengeRoom({
       setTimeLeft(propTimeLeft);
     }
   }, [socketTimeLeft, propTimeLeft]);
+  
+  // Show toast when opponent joins the challenge
+  useEffect(() => {
+    if (challenge.joinedBy && challenge.status === 'WAITING' && isCreator) {
+      showToast(`${challenge.joinedBy.codeforcesHandle} has joined your challenge!`, 'info');
+    }
+  }, [challenge.joinedBy, challenge.status]);
   
   // Get the opponent
   const opponent = challenge.createdBy.id === currentUser.id 
@@ -126,12 +135,16 @@ export default function ChallengeRoom({
         throw new Error(data.error || 'Failed to start challenge');
       }
       
+      showToast('Challenge started! Get ready to code!', 'success');
+      
       // The challenge started successfully - refresh will happen via parent component
       // Force a reload to ensure the UI updates properly
       window.location.reload();
     } catch (err) {
       console.error('Start challenge error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to start challenge');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to start challenge';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setStartingChallenge(false);
     }
@@ -196,29 +209,48 @@ export default function ChallengeRoom({
   const handleSubmissionSubmit = async () => {
     if (!selectedProblemId) {
       setError('Please select a problem');
+      showToast('Please select a problem', 'error');
       return;
     }
     
     if (!submissionInput.trim()) {
-      setError('Please enter a submission URL');
+      setError('Please enter a submission ID or URL');
+      showToast('Please enter a submission ID or URL', 'error');
       return;
     }
     
-    const submissionId = extractSubmissionId(submissionInput);
+    // Extract submission ID from input
+    let submissionId: number | null = null;
+    
+    // Check if input is a URL
+    if (submissionInput.includes('codeforces.com')) {
+      submissionId = extractSubmissionId(submissionInput);
+    } else {
+      // Attempt to parse as numeric ID
+      const parsedId = parseInt(submissionInput.trim(), 10);
+      if (!isNaN(parsedId)) {
+        submissionId = parsedId;
+      }
+    }
+    
     if (!submissionId) {
-      setError('Invalid submission URL. Please use a URL like https://codeforces.com/contest/123/submission/456789');
+      setError('Invalid submission ID or URL');
+      showToast('Invalid submission ID or URL', 'error');
       return;
     }
     
-    setError(null);
     setSubmitting(true);
+    setError(null);
     
     try {
       await onSubmit(selectedProblemId, submissionId);
       setSubmissionInput('');
       setSelectedProblemId('');
+      showToast('Submission recorded! Checking verdict...', 'info');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit solution');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to submit solution';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setSubmitting(false);
     }
@@ -228,6 +260,7 @@ export default function ChallengeRoom({
   const handleCopyCode = () => {
     navigator.clipboard.writeText(challenge.code);
     setCopiedCode(true);
+    showToast('Challenge code copied to clipboard!', 'success');
     setTimeout(() => setCopiedCode(false), 2000);
   };
   

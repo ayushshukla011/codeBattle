@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useToast } from '@/lib/toast-context';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -45,10 +47,15 @@ export default function LoginPage() {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
+      // Show success toast
+      showToast('Login successful! Redirecting...', 'success');
+
       // Login successful, redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      const errorMessage = err instanceof Error ? err.message : 'Login failed';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }
