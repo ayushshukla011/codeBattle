@@ -194,7 +194,9 @@ export default function ChallengeRoom({
   
   // Extract submission ID from Codeforces URL
   const extractSubmissionId = (url: string): number | null => {
-    // Match patterns like https://codeforces.com/contest/123/submission/456789
+    // Match patterns like:
+    // 1. https://codeforces.com/contest/123/submission/456789
+    // 2. https://codeforces.com/problemset/submission/123/456789
     const submissionRegex = /\/submission\/(\d+)/;
     const match = url.match(submissionRegex);
     
@@ -476,7 +478,7 @@ export default function ChallengeRoom({
               <select
                 value={selectedProblemId}
                 onChange={(e) => setSelectedProblemId(e.target.value)}
-                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md"
+                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block p-4 w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md"
                 disabled={submitting || getUnsolvedProblems().length === 0}
               >
                 <option value="">Select a problem</option>
@@ -493,7 +495,7 @@ export default function ChallengeRoom({
                 value={submissionInput}
                 onChange={(e) => setSubmissionInput(e.target.value)}
                 placeholder="Paste Codeforces submission URL"
-                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md"
+                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 p-4 block w-full sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md"
                 disabled={submitting || !selectedProblemId}
               />
             </div>
@@ -508,7 +510,7 @@ export default function ChallengeRoom({
             </div>
           </div>
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Enter the URL of your accepted Codeforces submission (e.g., https://codeforces.com/contest/123/submission/456789)
+            Enter the URL of your accepted Codeforces submission (e.g., https://codeforces.com/contest/123/submission/456789 or https://codeforces.com/problemset/submission/123/456789)
           </p>
         </div>
       ) : challenge.status === 'FINISHED' ? (
