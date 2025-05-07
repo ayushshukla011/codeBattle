@@ -1,3 +1,5 @@
+'use server';
+
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -8,6 +10,12 @@ import { z } from 'zod';
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string()
+});
+
+// Environment variable schema
+const envSchema = z.object({
+  JWT_SECRET: z.string(),
+  JWT_EXPIRATION: z.string().optional()
 });
 
 export async function POST(req: Request) {
@@ -46,15 +54,28 @@ export async function POST(req: Request) {
       );
     }
 
+    // Check for JWT secret
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error('JWT_SECRET is not set in environment variables');
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
+
     // Generate JWT
     const token = jwt.sign(
-      { 
+      {
         id: user.id,
         email: user.email,
         codeforcesHandle: user.codeforcesHandle
       },
-      process.env.JWT_SECRET || 'fallback-secret-key',
-      { expiresIn: process.env.JWT_EXPIRATION || '7d' }
+      jwtSecret,
+      {
+        expiresIn: '7d',
+        algorithm: 'HS256'
+      }
     );
 
     // Remove sensitive data

@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initSocket } from '@/lib/socket';
-import { Server as ServerIO } from 'socket.io';
-import { createServer } from 'http';
 
 // This route is needed to initialize Socket.IO
 export async function GET(req: NextRequest) {

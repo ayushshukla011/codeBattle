@@ -8,14 +8,35 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [userId, setUserId] = useState<string>('');
   
   useEffect(() => {
-    // Get the user ID from localStorage or session
-    // This assumes that your authentication system stores the user ID somewhere
-    const storedUserId = localStorage.getItem('userId') || '';
+    // Get the user ID from localStorage by parsing the user object
+    const storedUser = localStorage.getItem('user');
+    let storedUserId = '';
+    
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        storedUserId = user.id || '';
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    }
+    
     setUserId(storedUserId);
     
     // Set up listener for auth changes
     const handleStorageChange = () => {
-      const newUserId = localStorage.getItem('userId') || '';
+      const newStoredUser = localStorage.getItem('user');
+      let newUserId = '';
+      
+      if (newStoredUser) {
+        try {
+          const user = JSON.parse(newStoredUser);
+          newUserId = user.id || '';
+        } catch (e) {
+          console.error('Error parsing user data:', e);
+        }
+      }
+      
       if (newUserId !== userId) {
         setUserId(newUserId);
       }
